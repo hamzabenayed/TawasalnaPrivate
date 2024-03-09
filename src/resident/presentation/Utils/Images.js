@@ -54,3 +54,4 @@ export default Images = {
     POST6: require("../../../../assets/Posts/post6.jpeg"),
   },
 };
+export const imagesDataURL = ["https://i.ibb.co/W29btXp/profile.jpg"];

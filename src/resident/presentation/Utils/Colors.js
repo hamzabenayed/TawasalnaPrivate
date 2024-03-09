@@ -1,11 +1,15 @@
 export default Colors = {
-  BLACK: "black",
+  BLACK: "#000000",
   LIGHT_BLACK: "#5E5E5E",
-  GRAY: "gray",
-  LIGHT_GRAY: "lightgray",
-  WHITE: "white",
+  GRAY: "#2b2b2b",
+  LIGHT_GRAY: "#5a5959",
+  WHITE: "#FFFFFF",
   BLUE: "#0077B5",
-  LIGHT_BLUE: "rgb(247, 250, 252)",
+  LIGHT_BLUE: "#ADD8E6",
   BLUE1: "#EEF3F7",
-  DARK_YELLOW: "#F7C77E"
-}
+  DARK_YELLOW: "#F7C77E",
+  PRIMARY: "#242760",
+  PURPLE: "#770b7b",
+  LIGHT_WHITE: "#f0f2f5",
+  LIGHT_PURPLE: "#BA479B",
+};

@@ -1,35 +1,42 @@
-import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer, getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Screens from "./resident/presentation/Utils/Screens";
-import Home from "./resident/presentation/screens/Home";
-import Notification from "./resident/presentation/screens/Notification";
-import Job from "./resident/presentation/screens/Job";
-import Network from "./resident/presentation/screens/Network";
-import Post from "./resident/presentation/screens/Post";
+import React from "react";
+import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
+
 import Colors from "./resident/presentation/Utils/Colors";
 import Images from "./resident/presentation/Utils/Images";
+import Screens from "./resident/presentation/Utils/Screens";
 import CustomIcon from "./resident/presentation/components/CustomIcon";
-
+import EditProfile from "./resident/presentation/screens/EditProfile";
+import Home from "./resident/presentation/screens/Home";
+import Network from "./resident/presentation/screens/Network";
+import Notification from "./resident/presentation/screens/Notification";
+import Post from "./resident/presentation/screens/Post";
+import Profile2 from "./resident/presentation/screens/Profile2";
+import Settings from "./resident/presentation/screens/Settings";
+import Login from "./resident/presentation/screens/Login";
+////////////////////////////////////////////////////////////////////////////////////////
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const PostStack = createNativeStackNavigator();
 const NetworkStack = createNativeStackNavigator();
 const NotificationStack = createNativeStackNavigator();
-const JobStack = createNativeStackNavigator();
+const SettingsStack = createNativeStackNavigator();
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 const HomeScreen = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
     <HomeStack.Screen name={Screens.HOME} component={Home} />
-    <HomeStack.Screen name={Screens.PROFILE} component={Profile} />
   </HomeStack.Navigator>
 );
-const JobScreen = () => (
-  <JobStack.Navigator screenOptions={{ headerShown: false }}>
-    <JobStack.Screen name={Screens.JOB} component={Job} />
-  </JobStack.Navigator>
+const SettingsScreen = () => (
+  <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
+    <SettingsStack.Screen name={Screens.SETTINGS} component={Settings} />
+  </SettingsStack.Navigator>
 );
 
 const PostScreen = () => (
@@ -53,7 +60,9 @@ const NotificationScreen = () => (
   </NotificationStack.Navigator>
 );
 
-const HeaderOptions = ({ iconLeft, navigation, isPostScreen }) => (
+//////////////////////////////////////////////////////////////////////////////////////
+
+export const HeaderOptions = ({ iconLeft, navigation, isPostScreen }) => (
   <View
     style={{
       flexDirection: "row",
@@ -61,7 +70,7 @@ const HeaderOptions = ({ iconLeft, navigation, isPostScreen }) => (
       backgroundColor: Colors.WHITE,
       elevation: 4,
       paddingVertical: 7,
-      marginTop: 25,
+      marginTop: '7%',
     }}
   >
     <View style={{ paddingLeft: 10 }}>
@@ -70,7 +79,7 @@ const HeaderOptions = ({ iconLeft, navigation, isPostScreen }) => (
           <CustomIcon name={iconLeft} size={34} color={Colors.BLACK} />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={() => navigation.navigate(Screens.PROFILE)}>
+        <TouchableOpacity onPress={() => navigation.navigate(Screens.PROFILE2)}>
           <Image
             source={Images.PROFILE_PICTURE}
             style={{ height: 35, width: 35, borderRadius: 100 }}
@@ -120,83 +129,119 @@ const HeaderOptions = ({ iconLeft, navigation, isPostScreen }) => (
   </View>
 );
 
-
+const showTabBar = (route) => {
+  const routeName = getFocusedRouteNameFromRoute(route);
+  return routeName === "PROFILE2" ? "none" : "flex";
+};
 
 const Header = (
   navigation,
   route,
   icon,
   title,
-  iconleft,
+  iconLeft,
   isPostScreen,
   isNotificationScreen
 ) => ({
-  title: title,
+  title,
+  tabBarStyle: { display: showTabBar(route) },
   tabBarBadge: isNotificationScreen ? 5 : null,
-  tabBarIcon: ({ focused }) => (
-    <CustomIcon
-      name={icon}
-      size={28}
-      color={focused ? Colors.BLACK : Colors.GRAY}
-    />
-  ),
+  tabBarIcon: ({ focused }) => {
+    return (
+      <CustomIcon
+        name={icon}
+        size={28}
+        color={focused ? Colors.PURPLE : Colors.GRAY}
+      />
+    );
+  },
   header: () => (
     <HeaderOptions
-      iconleft={iconleft}
+      iconLeft={iconLeft}
       navigation={navigation}
       isPostScreen={isPostScreen}
     />
   ),
 });
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 export default function Routes() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen
-          name={Screens.HOME_STACK}
-          component={HomeScreen}
-          options={(navigation, route) =>
-            Header(navigation, route, "home", "Home")
-          }
+      <Stack.Navigator>
+        <Stack.Screen
+          name="LOGIN"
+          component={Login}
+          options={{ headerShown: false }}
         />
-        <Tab.Screen
-          name={Screens.NETWORK_STACK}
-          component={NetworkScreen}
-          options={(navigation, route) =>
-            Header(navigation, route, "people", "Network")
-          }
+        <Stack.Screen
+          name="TABBAR"
+          component={TabNavigator}
+          options={{ headerShown: false }}
         />
-        <Tab.Screen
-          name={Screens.POST_STACK}
-          component={PostScreen}
-          options={(navigation, route) =>
-            Header(navigation, route, "add-circle", "Post", "close", true)
-          }
+
+        <Stack.Screen
+          name="PROFILE2"
+          component={Profile2}
+          options={{ headerShown: false }}
         />
-        <Tab.Screen
-          name={Screens.NOTIFICATION_STACK}
-          component={NotificationScreen}
-          options={(navigation, route) =>
-            Header(
-              navigation,
-              route,
-              "notifications",
-              "Notifications",
-              "",
-              false,
-              true
-            )
-          }
+        <Stack.Screen
+          name="EDITPROFILE"
+          component={EditProfile}
+          options={{ headerShown: false }}
         />
-        <Tab.Screen
-          name={Screens.JOB_STACK}
-          component={JobScreen}
-          options={(navigation, route) =>
-            Header(navigation, route, "briefcase", "Job")
-          }
-        />
-      </Tab.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        name={Screens.HOME_STACK}
+        component={HomeScreen}
+        options={({ navigation, route }) =>
+          Header(navigation, route, "home", "Home")
+        }
+      />
+      <Tab.Screen
+        name={Screens.NETWORK_STACK}
+        component={NetworkScreen}
+        options={({ navigation, route }) =>
+          Header(navigation, route, "people", "Network")
+        }
+      />
+      <Tab.Screen
+        name={Screens.POST_STACK}
+        component={PostScreen}
+        options={({ navigation, route }) =>
+          Header(navigation, route, "add-circle", "Post", "close", true)
+        }
+      />
+      <Tab.Screen
+        name={Screens.NOTIFICATION_STACK}
+        component={NotificationScreen}
+        options={({ navigation, route }) =>
+          Header(
+            navigation,
+            route,
+            "notifications",
+            "Notifications",
+            "",
+            false,
+            true
+          )
+        }
+      />
+      <Tab.Screen
+        name={Screens.SETTINGS_STACK}
+        component={SettingsScreen}
+        options={({ navigation, route }) =>
+          Header(navigation, route, "cog", "Settings")
+        }
+      />
+    </Tab.Navigator>
+  );
+};
