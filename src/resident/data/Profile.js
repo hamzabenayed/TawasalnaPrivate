@@ -1,5 +1,4 @@
-import Images from "../Utils/Images";
-
+import Images from "../presentation/Utils/Images";
 export default Profile = {
   INFO: {
     name: 'Your Name',

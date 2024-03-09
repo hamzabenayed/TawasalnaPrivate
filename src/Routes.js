@@ -1,6 +1,6 @@
 import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
 import React from "react";
-import { NavigationContainer, getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Screens from "./resident/presentation/Utils/Screens";
@@ -9,8 +9,6 @@ import Notification from "./resident/presentation/screens/Notification";
 import Job from "./resident/presentation/screens/Job";
 import Network from "./resident/presentation/screens/Network";
 import Post from "./resident/presentation/screens/Post";
-import Profile from "./resident/presentation/screens/Profile";
-import Icon from "react-native-vector-icons/Ionicons";
 import Colors from "./resident/presentation/Utils/Colors";
 import Images from "./resident/presentation/Utils/Images";
 import CustomIcon from "./resident/presentation/components/CustomIcon";
