@@ -16,7 +16,7 @@ import { imagesDataURL } from "../Utils/Images";
 
 const EditProfile = ({ navigation }) => {
   const navigateToProfile = () => {
-    navigation.navigate("PROFILE2");
+    navigation.navigate("PROFILE");
   };
 
   const [selectedImage, setSelectedImage] = useState(imagesDataURL[0]);

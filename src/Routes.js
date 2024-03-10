@@ -13,9 +13,10 @@ import Home from "./resident/presentation/screens/Home";
 import Network from "./resident/presentation/screens/Network";
 import Notification from "./resident/presentation/screens/Notification";
 import Post from "./resident/presentation/screens/Post";
-import Profile2 from "./resident/presentation/screens/Profile2";
+import Profile from "./resident/presentation/screens/Profile";
 import Settings from "./resident/presentation/screens/Settings";
 import Login from "./resident/presentation/screens/Login";
+import SignUp from "./resident/presentation/screens/SignUp";
 ////////////////////////////////////////////////////////////////////////////////////////
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -79,7 +80,7 @@ export const HeaderOptions = ({ iconLeft, navigation, isPostScreen }) => (
           <CustomIcon name={iconLeft} size={34} color={Colors.BLACK} />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={() => navigation.navigate(Screens.PROFILE2)}>
+        <TouchableOpacity onPress={() => navigation.navigate(Screens.PROFILE)}>
           <Image
             source={Images.PROFILE_PICTURE}
             style={{ height: 35, width: 35, borderRadius: 100 }}
@@ -131,7 +132,7 @@ export const HeaderOptions = ({ iconLeft, navigation, isPostScreen }) => (
 
 const showTabBar = (route) => {
   const routeName = getFocusedRouteNameFromRoute(route);
-  return routeName === "PROFILE2" ? "none" : "flex";
+  return routeName === "PROFILE" ? "none" : "flex";
 };
 
 const Header = (
@@ -176,14 +177,19 @@ export default function Routes() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="SIGNUP"
+          component={SignUp}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="TABBAR"
           component={TabNavigator}
           options={{ headerShown: false }}
         />
 
         <Stack.Screen
-          name="PROFILE2"
-          component={Profile2}
+          name="PROFILE"
+          component={Profile}
           options={{ headerShown: false }}
         />
         <Stack.Screen
