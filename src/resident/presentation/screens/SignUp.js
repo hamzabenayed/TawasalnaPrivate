@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ToastAndroid,
 } from "react-native";
 import Colors from "../Utils/Colors";
 import {
@@ -13,57 +14,121 @@ import {
   MaterialCommunityIcons,
   FontAwesome5,
 } from "@expo/vector-icons";
+import axios from "axios";
+import { base_Url } from "../../../BaseUrl";
+import { Toast } from "react-native-toast-message";
 
 const SignUp = () => {
   const navigation = useNavigation();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+  const [role, setRole] = useState("65d6717f31baa16064d291dc");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [phoneNumberError, setPhoneNumberError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [id, setId] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const togglePasswordVisibility = () => {
+  //////////////////////////////////////////////////////////////////
+  const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
-  const [isChecked, setIsChecked] = useState(false);
-
+  //////////////////////////////////////////////////////////////////
   const toggleCheckbox = () => {
     setIsChecked(!isChecked);
   };
   const navigateToLogin = () => {
     navigation.navigate("LOGIN");
   };
-  const handleSignUp = () => {
-    if (!firstName) {
-      setFirstNameError("Please enter your first name");
+  /////////////////////////////////////////////////////////////////
+  const isValidEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+  //////////////////////////////////////////////////////////////////
+  const isValidPassword = (password) => {
+    const errors = {
+      minLength: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      symbol: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+      number: /\d/.test(password),
+    };
+
+    const isValid = Object.values(errors).every((valid) => valid);
+
+    return { isValid, errors };
+  };
+  /////////////////////////////////////////////////////////////////////
+  const handleSignUp = async () => {
+      const passwordValidation = isValidPassword(password);
+
+    if (!email.trim()){
+         ToastAndroid.show("email is empty!", ToastAndroid.SHORT);
       return;
     }
-
-    if (!lastName) {
-      setLastNameError("Please enter your last name");
+      else if (!isValidEmail(email)){
+        ToastAndroid.show("Invalid email address!", ToastAndroid.SHORT);
       return;
-    }
+      }
 
-    if (!phoneNumber) {
-      setPhoneNumberError("Please enter your phone number");
+     else if ( !address.trim() ){
+         ToastAndroid.show("address is empty!", ToastAndroid.SHORT);
       return;
-    }
 
-    if (!email) {
-      setEmailError("Please enter your email");
-      return;
-    }
+    } else if ( !password.trim()) {
+         ToastAndroid.show("password is empty!", ToastAndroid.SHORT);
 
-    if (!password) {
-      setPasswordError("Please enter your password");
       return;
+    }  
+      else if (!passwordValidation.isValid) {
+        let errorMessage = "";
+
+        if (!passwordValidation.errors.minLength) {
+          errorMessage += "Password must be at least 8 characters long.\n";
+        }
+        if (!passwordValidation.errors.uppercase) {
+          errorMessage +=
+            "Password must contain at least one uppercase letter.\n";
+        }
+        if (!passwordValidation.errors.lowercase) {
+          errorMessage +=
+            "Password must contain at least one lowercase letter.\n";
+        }
+        if (!passwordValidation.errors.symbol) {
+          errorMessage += "Password must contain at least one symbol.\n";
+        }
+        if (!passwordValidation.errors.number) {
+          errorMessage += "Password must contain at least one number.\n";
+        }
+
+        ToastAndroid.show(errorMessage, ToastAndroid.LONG);
+        return;
+      } else if (password !== confirmPassword) {
+        ToastAndroid.show("Passwords do not match!", ToastAndroid.SHORT);
+        return;
+      }
+      else if (!isChecked) {
+        ToastAndroid.show(
+          "Please accept the Terms of Services and Privacy Policy!",
+          ToastAndroid.SHORT
+        );
+        return;
+      }
+
+    try {
+      const response = await axios.post(
+        `${base_Url}/tawasalna-user/auth/signup`,
+        {
+          email,
+          password,
+          role,
+          address,
+        }
+      );
+      console.log("Sign-up successful:", response.data);
+      navigation.navigate("LOGIN");
+    } catch (error) {
+      console.error("Error signing up:", error);
     }
   };
 
@@ -89,6 +154,8 @@ const SignUp = () => {
             autoCapitalize="none"
             autoCompleteType="email"
             autoCorrect={false}
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
         <Text style={{ marginLeft: "4%" }}>Address</Text>
@@ -107,6 +174,8 @@ const SignUp = () => {
             placeholder="Enter your address..."
             autoCapitalize="none"
             autoCorrect={false}
+            value={address}
+            onChangeText={setAddress}
           />
         </View>
         <Text style={{ marginLeft: "4%" }}>Password</Text>
@@ -125,20 +194,19 @@ const SignUp = () => {
         >
           <TextInput
             placeholder="*********"
-            secureTextEntry
+            secureTextEntry={!showPassword}
             autoCapitalize="none"
             autoCompleteType="password"
             autoCorrect={false}
+            value={password}
+            onChangeText={setPassword}
+            style={{ flex: 1 }}
           />
-          <TouchableOpacity
-            onPress={togglePasswordVisibility}
-            style={{ marginLeft: 10 }}
-          >
-            <MaterialIcons
-              name={showPassword ? "visibility-off" : "visibility"}
+          <TouchableOpacity onPress={toggleShowPassword}>
+            <MaterialCommunityIcons
+              name={showPassword ? "eye-off" : "eye"}
               size={24}
               color="black"
-              style={{ marginLeft: 240 }}
             />
           </TouchableOpacity>
         </View>
@@ -158,20 +226,19 @@ const SignUp = () => {
         >
           <TextInput
             placeholder="*********"
-            secureTextEntry
+            secureTextEntry={!showPassword}
             autoCapitalize="none"
             autoCompleteType="password"
             autoCorrect={false}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            style={{ flex: 1 }}
           />
-          <TouchableOpacity
-            onPress={togglePasswordVisibility}
-            style={{ marginLeft: 10 }}
-          >
-            <MaterialIcons
-              name={showPassword ? "visibility-off" : "visibility"}
+          <TouchableOpacity onPress={toggleShowPassword}>
+            <MaterialCommunityIcons
+              name={showPassword ? "eye-off" : "eye"}
               size={24}
               color="black"
-              style={{ marginLeft: 240 }}
             />
           </TouchableOpacity>
         </View>
@@ -216,7 +283,7 @@ const SignUp = () => {
       </View>
       <View>
         <TouchableOpacity
-          onPress={navigateToLogin}
+          onPress={handleSignUp}
           style={{
             borderColor: "gray",
             borderWidth: 1,
