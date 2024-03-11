@@ -16,47 +16,47 @@ import {
 import axios from "axios";
 import { base_Url } from "../../../BaseUrl";
 
-const EnterCode = () => {
-
-  const codeInputRefs = useRef([]);
-  const navigation = useNavigation();
-  const route = useRoute();
-  const [code, setCode] = useState(["", "", "", "", "", ""]);
-  const [email, setEmail] = useState(route.params.email);
-/////////////////////////////////////////////////////////////
+const VerifyAccount = () => {
+const navigation = useNavigation();
+const codeInputRefs = useRef([]);
+const route = useRoute();
+const [code, setCode] = useState(["", "", "", "", "", ""]); 
+const [email, setEmail] = useState(route.params.email );
+////////////////////////////////////////////////////////////////
   const handleCodeChange = (text, index) => {
     const newCode = [...code];
     newCode[index] = text;
     setCode(newCode);
-    if (index < code.length - 1 && text !== "") {
-      codeInputRefs.current[index + 1].focus();
-    }
+     if (index < code.length - 1 && text !== "") {
+       codeInputRefs.current[index + 1].focus();
+     }
   };
   //////////////////////////////////////////////////////////////
-  const handleEnterCodeForgotPassword = async () => {
-    const enteredCode = code.join("");
+  const handleVerifyAccount = async () => {
+    const enteredCode = code.join(""); 
     const isAnyCodeEmpty = code.some((item) => item === "");
-    if (isAnyCodeEmpty) {
-      ToastAndroid.show("Please enter all 6 digits", ToastAndroid.SHORT);
-      return;
-    } else if (enteredCode.length < 6) {
-      ToastAndroid.show("Please enter a 6-digit code", ToastAndroid.SHORT);
-      return;
-    }
+   if (isAnyCodeEmpty) {
+     ToastAndroid.show("Please enter all 6 digits", ToastAndroid.SHORT);
+     return;
+   } else if (enteredCode.length < 6) {
+     ToastAndroid.show("Please enter a 6-digit code", ToastAndroid.SHORT);
+     return;
+   }
     try {
-      const response = await axios.post(
-        `${base_Url}/tawasalna-user/auth/verifyCode`,
+      const response = await axios.patch(
+        `${base_Url}/tawasalna-user/auth/verifyAccount`,
         {
           email,
           code: enteredCode,
         }
       );
-      console.log(" Code Verified:", response.data,code);
-      navigation.navigate("Reset your password",{ email, code });
+      console.log(" Account Verified:", response.data);
+      navigation.navigate("AccountActivated");
     } catch (error) {
-      console.error("Error while verifying Code :", error);
+      console.error("Error while verifying account :", error);
     }
   };
+  
   return (
     <SafeAreaView style={{ backgroundColor: Colors.WHITE, height: 760 }}>
       <View style={{ marginTop: "40%" }}>
@@ -105,7 +105,7 @@ const EnterCode = () => {
       </View>
       <View style={{ marginTop: "5%" }}>
         <TouchableOpacity
-          onPress={handleEnterCodeForgotPassword}
+          onPress={handleVerifyAccount}
           style={{
             flexDirection: "row",
             borderColor: "gray",
@@ -128,4 +128,4 @@ const EnterCode = () => {
   );
 };
 
-export default EnterCode;
+export default VerifyAccount;

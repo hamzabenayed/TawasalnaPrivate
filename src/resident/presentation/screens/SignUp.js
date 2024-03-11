@@ -124,7 +124,7 @@ const SignUp = () => {
         }
       );
       console.log("Sign-up successful:", response.data);
-      navigation.navigate("LOGIN");
+      navigation.navigate("Verify your account", { email });
     } catch (error) {
       console.error("Error signing up:", error);
     }

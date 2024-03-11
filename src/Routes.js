@@ -19,7 +19,9 @@ import Login from "./resident/presentation/screens/Login";
 import SignUp from "./resident/presentation/screens/SignUp";
 import ForgotPassword from "./resident/presentation/screens/ForgotPassword";
 import EnterCode from "./resident/presentation/screens/EnterCode";
+import VerifyAccount from "./resident/presentation/screens/VerifyAccount";
 import ResetPassword from "./resident/presentation/screens/ResetPassword";
+import AccountActivated from "./resident/presentation/screens/AccountActivated";
 ////////////////////////////////////////////////////////////////////////////////////////
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -190,14 +192,24 @@ export default function Routes() {
           options={{ headerShown: true }}
         />
         <Stack.Screen
-          name="Enter Your Code "
+          name="Enter Your Code"
           component={EnterCode}
           options={{ headerShown: true }}
         />
         <Stack.Screen
-          name="Reset your password "
+          name="Reset your password"
           component={ResetPassword}
           options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Verify your account"
+          component={VerifyAccount}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="AccountActivated"
+          component={AccountActivated}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="TABBAR"

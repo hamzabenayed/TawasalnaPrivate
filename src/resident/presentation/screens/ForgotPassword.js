@@ -5,17 +5,46 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   MaterialIcons,
   MaterialCommunityIcons,
   FontAwesome5,
 } from "@expo/vector-icons";
+import axios from "axios";
+import { base_Url } from "../../../BaseUrl";
+
 const ForgotPassword = () => {
+
 const navigation = useNavigation();
-const handleEnterCode = () => {
-  navigation.navigate("Enter Your Code ");
+const [email, setEmail] = useState("");
+/////////////////////////////////////////
+const isValidEmail = (email) => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
+};
+/////////////////////////////////////////
+const handleForgotPassword = async () => {
+  if (!email.trim()) {
+    ToastAndroid.show("email is empty!", ToastAndroid.SHORT);
+    return;
+  } else if (!isValidEmail(email)) {
+    ToastAndroid.show("Invalid email address!", ToastAndroid.SHORT);
+    return;
+  }
+  try {
+    const response = await axios.post(
+      `${base_Url}/tawasalna-user/auth/forgotPassword`,
+      {
+        email
+      }
+    );
+    console.log("Forgot Password successful:", response.data);
+    navigation.navigate("Enter Your Code" , {email});
+  } catch (error) {
+    console.error("Error Forgot Paswword:", error);
+  }
 };
   return (
     <SafeAreaView style={{ backgroundColor: Colors.WHITE, height: 760 }}>
@@ -40,13 +69,13 @@ const handleEnterCode = () => {
             autoCapitalize="none"
             autoCompleteType="email"
             autoCorrect={false}
-            //value={email}
-            //onChangeText={setEmail}
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
         <View>
           <TouchableOpacity
-          onPress={handleEnterCode}
+            onPress={handleForgotPassword}
             style={{
               flexDirection: "row",
               borderColor: "gray",
@@ -57,7 +86,7 @@ const handleEnterCode = () => {
               width: 340,
               marginLeft: "2%",
               alignItems: "center",
-              justifyContent: "center", 
+              justifyContent: "center",
               backgroundColor: Colors.PURPLE,
             }}
           >
