@@ -45,6 +45,7 @@ const isValidPassword = (newPassword) => {
 };
 //////////////////////////////////////////////////////////////////////
 const handleResetPassword = async () => {
+        const enteredCode = code.join("");
         const passwordValidation = isValidPassword(newPassword);
     if (!newPassword.trim()) {
       ToastAndroid.show("password is empty!", ToastAndroid.SHORT);
@@ -82,15 +83,15 @@ const handleResetPassword = async () => {
     const response = await axios.patch(
       `${base_Url}/tawasalna-user/auth/resetPassword`,
       {
-        code,
         email,
         newPassword,
+        code: enteredCode,
       }
     );
     console.log(" Password Reset Success :", response.data);
     navigation.navigate("LOGIN");
   } catch (error) {
-    console.error("Error while Reset Password :", error,code,email,newPassword);
+    console.error("Error while Reset Password :", error);
   }
 };
   return (

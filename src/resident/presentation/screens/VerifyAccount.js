@@ -4,6 +4,7 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import React, { useState, useRef } from "react";
 import Colors from "../Utils/Colors";
@@ -23,38 +24,56 @@ const route = useRoute();
 const [code, setCode] = useState(["", "", "", "", "", ""]); 
 const [email, setEmail] = useState(route.params.email );
 ////////////////////////////////////////////////////////////////
-  const handleCodeChange = (text, index) => {
+  const handleCodeChange = async (text, index) => {
     const newCode = [...code];
     newCode[index] = text;
     setCode(newCode);
-     if (index < code.length - 1 && text !== "") {
-       codeInputRefs.current[index + 1].focus();
-     }
+
+    if (index === 5 && newCode.every((item) => item !== "")) {
+      const enteredCode = newCode.join("");
+
+      try {
+        const response = await axios.patch(
+          `${base_Url}/tawasalna-user/auth/verifyAccount`,
+          {
+            email,
+            code: enteredCode,
+          }
+        );
+        console.log("Account Verified:", response.data);
+        navigation.navigate("AccountActivated");
+      } catch (error) {
+        console.error("Error while verifying Account :", error);
+        ToastAndroid.show(
+          "Failed to verify Account. Please try again.",
+          ToastAndroid.SHORT
+        );
+      }
+    } else if (text !== "") {
+      codeInputRefs.current[index + 1].focus();
+    }
   };
   //////////////////////////////////////////////////////////////
   const handleVerifyAccount = async () => {
     const enteredCode = code.join(""); 
-    const isAnyCodeEmpty = code.some((item) => item === "");
-   if (isAnyCodeEmpty) {
-     ToastAndroid.show("Please enter all 6 digits", ToastAndroid.SHORT);
-     return;
-   } else if (enteredCode.length < 6) {
-     ToastAndroid.show("Please enter a 6-digit code", ToastAndroid.SHORT);
-     return;
+   
+   try {
+     const response = await axios.patch(
+       `${base_Url}/tawasalna-user/auth/verifyAccount`,
+       {
+         email,
+         code: enteredCode,
+       }
+     );
+     console.log("Account Verified:", response.data);
+     navigation.navigate("AccountActivated");
+   } catch (error) {
+     console.error("Error while verifying account :", error);
+     ToastAndroid.show(
+       "Failed to verify code. Please try again.",
+       ToastAndroid.SHORT
+     );
    }
-    try {
-      const response = await axios.patch(
-        `${base_Url}/tawasalna-user/auth/verifyAccount`,
-        {
-          email,
-          code: enteredCode,
-        }
-      );
-      console.log(" Account Verified:", response.data);
-      navigation.navigate("AccountActivated");
-    } catch (error) {
-      console.error("Error while verifying account :", error);
-    }
   };
   
   return (
@@ -103,7 +122,7 @@ const [email, setEmail] = useState(route.params.email );
           <Text style={{ color: Colors.PURPLE, marginLeft: 5 }}>Resend</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ marginTop: "5%" }}>
+      {/*<View style={{ marginTop: "5%" }}>
         <TouchableOpacity
           onPress={handleVerifyAccount}
           style={{
@@ -123,7 +142,7 @@ const [email, setEmail] = useState(route.params.email );
           <MaterialIcons name="send" size={24} color={Colors.LIGHT_WHITE} />
           <Text style={{ color: Colors.WHITE, marginLeft: 5 }}>Continue</Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
     </SafeAreaView>
   );
 };

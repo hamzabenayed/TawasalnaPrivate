@@ -4,6 +4,7 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import React, { useState, useRef } from "react";
 import Colors from "../Utils/Colors";
@@ -24,37 +25,42 @@ const EnterCode = () => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [email, setEmail] = useState(route.params.email);
 /////////////////////////////////////////////////////////////
-  const handleCodeChange = (text, index) => {
+  const handleCodeChange = async (text, index) => {
     const newCode = [...code];
     newCode[index] = text;
     setCode(newCode);
-    if (index < code.length - 1 && text !== "") {
+
+    if (index === 5 && newCode.every((item) => item !== "")) {
+      const enteredCode = newCode.join("");
+
+      try {
+        const response = await axios.post(
+          `${base_Url}/tawasalna-user/auth/verifyCode`,
+          {
+            email,
+            code: enteredCode,
+          }
+        );
+        console.log("Code Verified:", response.data);
+        navigation.navigate("Reset your password", { email, code });
+      } catch (error) {
+        console.error("Error while verifying Code :", error);
+         ToastAndroid.show(
+           "Failed to verify code. Please try again.",
+           ToastAndroid.SHORT
+         );
+
+      }
+    } else if (text !== "") {
       codeInputRefs.current[index + 1].focus();
     }
   };
   //////////////////////////////////////////////////////////////
-  const handleEnterCodeForgotPassword = async () => {
-    const enteredCode = code.join("");
+  const handleEnterCodeForgotPassword = () => {
     const isAnyCodeEmpty = code.some((item) => item === "");
     if (isAnyCodeEmpty) {
       ToastAndroid.show("Please enter all 6 digits", ToastAndroid.SHORT);
       return;
-    } else if (enteredCode.length < 6) {
-      ToastAndroid.show("Please enter a 6-digit code", ToastAndroid.SHORT);
-      return;
-    }
-    try {
-      const response = await axios.post(
-        `${base_Url}/tawasalna-user/auth/verifyCode`,
-        {
-          email,
-          code: enteredCode,
-        }
-      );
-      console.log(" Code Verified:", response.data,code);
-      navigation.navigate("Reset your password",{ email, code });
-    } catch (error) {
-      console.error("Error while verifying Code :", error);
     }
   };
   return (
@@ -65,7 +71,7 @@ const EnterCode = () => {
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            marginTop: "-25%",
+            marginTop: "-20%",
           }}
         >
           {code.map((code, index) => (
@@ -73,7 +79,7 @@ const EnterCode = () => {
               key={index}
               ref={(ref) => (codeInputRefs.current[index] = ref)}
               style={{
-                borderColor: "gray",
+                borderColor: Colors.PURPLE,
                 borderWidth: 1,
                 borderRadius: 8,
                 padding: 10,
@@ -94,7 +100,7 @@ const EnterCode = () => {
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "-3%",
+          marginTop: "2%",
           marginRight: 10,
         }}
       >
@@ -103,7 +109,7 @@ const EnterCode = () => {
           <Text style={{ color: Colors.PURPLE, marginLeft: 5 }}>Resend</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ marginTop: "5%" }}>
+      {/*<View style={{ marginTop: "5%" }}>
         <TouchableOpacity
           onPress={handleEnterCodeForgotPassword}
           style={{
@@ -123,7 +129,7 @@ const EnterCode = () => {
           <MaterialIcons name="send" size={24} color={Colors.LIGHT_WHITE} />
           <Text style={{ color: Colors.WHITE, marginLeft: 5 }}>Continue</Text>
         </TouchableOpacity>
-      </View>
+      </View>*/}
     </SafeAreaView>
   );
 };
