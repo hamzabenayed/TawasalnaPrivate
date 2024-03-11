@@ -12,11 +12,9 @@ import Colors from "../Utils/Colors";
 import {
   MaterialIcons,
   MaterialCommunityIcons,
-  FontAwesome5,
 } from "@expo/vector-icons";
 import axios from "axios";
 import { base_Url } from "../../../BaseUrl";
-import { Toast } from "react-native-toast-message";
 
 const SignUp = () => {
   const navigation = useNavigation();

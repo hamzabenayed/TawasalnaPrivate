@@ -17,6 +17,9 @@ import Profile from "./resident/presentation/screens/Profile";
 import Settings from "./resident/presentation/screens/Settings";
 import Login from "./resident/presentation/screens/Login";
 import SignUp from "./resident/presentation/screens/SignUp";
+import ForgotPassword from "./resident/presentation/screens/ForgotPassword";
+import EnterCode from "./resident/presentation/screens/EnterCode";
+import ResetPassword from "./resident/presentation/screens/ResetPassword";
 ////////////////////////////////////////////////////////////////////////////////////////
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -180,6 +183,21 @@ export default function Routes() {
           name="SIGNUP"
           component={SignUp}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Forgot Password"
+          component={ForgotPassword}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Enter Your Code "
+          component={EnterCode}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Reset your password "
+          component={ResetPassword}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="TABBAR"
