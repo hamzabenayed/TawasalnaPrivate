@@ -46,7 +46,7 @@ const EditProfile = ({ navigation }) => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: Colors.LIGHT_WHITE,
+        backgroundColor: Colors.WHITE,
         paddingHorizontal: 22,
       }}
     >
@@ -94,14 +94,16 @@ const EditProfile = ({ navigation }) => {
               borderRadius: 7,
             }}
           >
-            <Text style={{}}>ResidentID</Text>
+            <Text style={{ color: Colors.PURPLE, fontWeight: "bold" }}>
+              ResidentID
+            </Text>
             <View
               style={{
                 height: 44,
                 width: "100%",
                 borderColor: Colors.secondaryGray,
                 borderWidth: 1,
-                borderRadius: 4,
+                borderRadius: 10,
                 marginVertical: 6,
                 justifyContent: "center",
                 paddingLeft: 8,
@@ -121,14 +123,16 @@ const EditProfile = ({ navigation }) => {
               borderRadius: 7,
             }}
           >
-            <Text style={{}}>FullName</Text>
+            <Text style={{ color: Colors.PURPLE, fontWeight: "bold" }}>
+              FullName
+            </Text>
             <View
               style={{
                 height: 44,
                 width: "100%",
                 borderColor: Colors.secondaryGray,
                 borderWidth: 1,
-                borderRadius: 4,
+                borderRadius: 10,
                 marginVertical: 6,
                 justifyContent: "center",
                 paddingLeft: 8,
@@ -149,14 +153,16 @@ const EditProfile = ({ navigation }) => {
               borderRadius: 7,
             }}
           >
-            <Text style={{}}>PhoneNumber</Text>
+            <Text style={{ color: Colors.PURPLE, fontWeight: "bold" }}>
+              PhoneNumber
+            </Text>
             <View
               style={{
                 height: 44,
                 width: "100%",
                 borderColor: Colors.secondaryGray,
                 borderWidth: 1,
-                borderRadius: 4,
+                borderRadius: 10,
                 marginVertical: 6,
                 justifyContent: "center",
                 paddingLeft: 8,
@@ -176,14 +182,17 @@ const EditProfile = ({ navigation }) => {
               borderRadius: 7,
             }}
           >
-            <Text style={{}}> Address</Text>
+            <Text style={{ color: Colors.PURPLE, fontWeight: "bold" }}>
+              {" "}
+              Address
+            </Text>
             <View
               style={{
                 height: 44,
                 width: "100%",
                 borderColor: Colors.secondaryGray,
                 borderWidth: 1,
-                borderRadius: 4,
+                borderRadius: 10,
                 marginVertical: 6,
                 justifyContent: "center",
                 paddingLeft: 8,
@@ -202,14 +211,16 @@ const EditProfile = ({ navigation }) => {
               marginBottom: 6,
             }}
           >
-            <Text style={{}}>Age</Text>
+            <Text style={{ color: Colors.PURPLE, fontWeight: "bold" }}>
+              Age
+            </Text>
             <View
               style={{
                 height: 44,
                 width: "100%",
                 borderColor: Colors.secondaryGray,
                 borderWidth: 1,
-                borderRadius: 4,
+                borderRadius: 10,
                 marginVertical: 6,
                 justifyContent: "center",
                 paddingLeft: 8,
@@ -229,14 +240,16 @@ const EditProfile = ({ navigation }) => {
               marginBottom: 6,
             }}
           >
-            <Text style={{}}>Gender</Text>
+            <Text style={{ color: Colors.PURPLE, fontWeight: "bold" }}>
+              Gender
+            </Text>
             <View
               style={{
                 height: 44,
                 width: "100%",
                 borderColor: Colors.secondaryGray,
                 borderWidth: 1,
-                borderRadius: 4,
+                borderRadius: 10,
                 marginVertical: 6,
                 justifyContent: "center",
                 paddingLeft: 8,
@@ -258,16 +271,17 @@ const EditProfile = ({ navigation }) => {
           style={{
             backgroundColor: Colors.PURPLE,
             height: 44,
-            borderRadius: 6,
+            borderRadius: 10,
             alignItems: "center",
             justifyContent: "center",
+            marginTop:8,
             marginBottom: 10,
           }}
           onPress={navigateToProfile}
         >
           <Text
             style={{
-              color: Colors.BLACK,
+              color: Colors.WHITE,
             }}
           >
             Save Change

@@ -9,11 +9,6 @@ import {
 import React, { useState, useRef } from "react";
 import Colors from "../Utils/Colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import {
-  MaterialIcons,
-  MaterialCommunityIcons,
-  FontAwesome5,
-} from "@expo/vector-icons";
 import axios from "axios";
 import { base_Url } from "../../../BaseUrl";
 
@@ -55,14 +50,7 @@ const EnterCode = () => {
       codeInputRefs.current[index + 1].focus();
     }
   };
-  //////////////////////////////////////////////////////////////
-  const handleEnterCodeForgotPassword = () => {
-    const isAnyCodeEmpty = code.some((item) => item === "");
-    if (isAnyCodeEmpty) {
-      ToastAndroid.show("Please enter all 6 digits", ToastAndroid.SHORT);
-      return;
-    }
-  };
+  
   return (
     <SafeAreaView style={{ backgroundColor: Colors.WHITE, height: 760 }}>
       <View style={{ marginTop: "40%" }}>
@@ -109,27 +97,7 @@ const EnterCode = () => {
           <Text style={{ color: Colors.PURPLE, marginLeft: 5 }}>Resend</Text>
         </TouchableOpacity>
       </View>
-      {/*<View style={{ marginTop: "5%" }}>
-        <TouchableOpacity
-          onPress={handleEnterCodeForgotPassword}
-          style={{
-            flexDirection: "row",
-            borderColor: "gray",
-            borderWidth: 1,
-            borderRadius: 10,
-            padding: 13,
-            marginBottom: 10,
-            width: 340,
-            marginLeft: "2%",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: Colors.PURPLE,
-          }}
-        >
-          <MaterialIcons name="send" size={24} color={Colors.LIGHT_WHITE} />
-          <Text style={{ color: Colors.WHITE, marginLeft: 5 }}>Continue</Text>
-        </TouchableOpacity>
-      </View>*/}
+    
     </SafeAreaView>
   );
 };

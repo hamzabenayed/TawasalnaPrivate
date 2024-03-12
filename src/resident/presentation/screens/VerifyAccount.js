@@ -53,28 +53,7 @@ const [email, setEmail] = useState(route.params.email );
       codeInputRefs.current[index + 1].focus();
     }
   };
-  //////////////////////////////////////////////////////////////
-  const handleVerifyAccount = async () => {
-    const enteredCode = code.join(""); 
-   
-   try {
-     const response = await axios.patch(
-       `${base_Url}/tawasalna-user/auth/verifyAccount`,
-       {
-         email,
-         code: enteredCode,
-       }
-     );
-     console.log("Account Verified:", response.data);
-     navigation.navigate("AccountActivated");
-   } catch (error) {
-     console.error("Error while verifying account :", error);
-     ToastAndroid.show(
-       "Failed to verify code. Please try again.",
-       ToastAndroid.SHORT
-     );
-   }
-  };
+  
   
   return (
     <SafeAreaView style={{ backgroundColor: Colors.WHITE, height: 760 }}>
@@ -122,27 +101,6 @@ const [email, setEmail] = useState(route.params.email );
           <Text style={{ color: Colors.PURPLE, marginLeft: 5 }}>Resend</Text>
         </TouchableOpacity>
       </View>
-      {/*<View style={{ marginTop: "5%" }}>
-        <TouchableOpacity
-          onPress={handleVerifyAccount}
-          style={{
-            flexDirection: "row",
-            borderColor: "gray",
-            borderWidth: 1,
-            borderRadius: 10,
-            padding: 13,
-            marginBottom: 10,
-            width: 340,
-            marginLeft: "2%",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: Colors.PURPLE,
-          }}
-        >
-          <MaterialIcons name="send" size={24} color={Colors.LIGHT_WHITE} />
-          <Text style={{ color: Colors.WHITE, marginLeft: 5 }}>Continue</Text>
-        </TouchableOpacity>
-      </View>*/}
     </SafeAreaView>
   );
 };

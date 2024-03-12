@@ -7,14 +7,17 @@ import Icon from "react-native-vector-icons/Entypo";
 import * as ProfileData from "../../data/Profile";
 import Colors from "../Utils/Colors";
 import Images from "../Utils/Images";
+import { launchImageLibrary } from "react-native-image-picker";
 
 const Profile2 = () => {
   const DATA = ProfileData.default;
   const navigation = useNavigation();
-
+  
+////////////////////////////////////////////////////////////////////////
   const NavigateToEditProfile = () => {
     navigation.navigate("EDITPROFILE");
   };
+///////////////////////////////////////////////////////////////////////
 
   return (
     <ScrollView showsVerticalScrollIndicator style={{ marginTop: "7%" }}>
@@ -48,10 +51,11 @@ const Profile2 = () => {
               borderWidth: 3,
               bottom: 70,
               left: "-2%",
+              marginBottom:-60
             }}
           />
           <Text
-            style={{ color: Colors.BLACK, fontSize: 27, fontWeight: "bold" }}
+            style={{ color: Colors.BLACK, fontSize: 27, fontWeight: "bold"  }}
           >
             Hamza Ben Ayed
           </Text>
@@ -71,7 +75,7 @@ const Profile2 = () => {
           <TouchableOpacity
             style={{
               backgroundColor: Colors.PURPLE,
-              borderRadius: 7,
+              borderRadius: 10,
               width: 160,
               paddingVertical: 5,
               alignItems: "center",
@@ -89,7 +93,7 @@ const Profile2 = () => {
             style={{
               borderWidth: 1,
               borderColor: Colors.GRAY,
-              borderRadius: 7,
+              borderRadius: 10,
               width: 160,
               paddingVertical: 5,
               alignItems: "center",
@@ -100,7 +104,7 @@ const Profile2 = () => {
           >
             <Icon name="pencil" size={20} style={{ marginLeft: 3 }} />
             <Text
-              style={{ fontSize: 19, color: Colors.BLACK, fontWeight: "bold" }}
+              style={{ fontSize: 18, color: Colors.BLACK, fontWeight: "bold" }}
             >
               Update Profile
             </Text>
@@ -165,10 +169,10 @@ const Profile2 = () => {
         <TouchableOpacity
           style={{
             backgroundColor: Colors.PURPLE,
-            width: 280,
+            width: 200,
             height: 30,
             alignItems: "center",
-            borderRadius: 7,
+            borderRadius: 10,
           }}
         >
           <Text
@@ -180,10 +184,10 @@ const Profile2 = () => {
         <TouchableOpacity
           style={{
             backgroundColor: Colors.PURPLE,
-            width: 280,
+            width: 200,
             height: 30,
             alignItems: "center",
-            borderRadius: 7,
+            borderRadius: 10,
             marginTop: 12,
           }}
         >
@@ -196,10 +200,10 @@ const Profile2 = () => {
         <TouchableOpacity
           style={{
             backgroundColor: Colors.PURPLE,
-            width: 280,
+            width: 200,
             height: 30,
             alignItems: "center",
-            borderRadius: 7,
+            borderRadius: 10,
             marginTop: 12,
             marginBottom: 17,
           }}
