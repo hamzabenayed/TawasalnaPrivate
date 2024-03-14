@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
 
+
 import Colors from "./resident/presentation/Utils/Colors";
 import Images from "./resident/presentation/Utils/Images";
 import Screens from "./resident/presentation/Utils/Screens";
@@ -22,6 +23,8 @@ import EnterCode from "./resident/presentation/screens/EnterCode";
 import VerifyAccount from "./resident/presentation/screens/VerifyAccount";
 import ResetPassword from "./resident/presentation/screens/ResetPassword";
 import AccountActivated from "./resident/presentation/screens/AccountActivated";
+import { Ionicons } from '@expo/vector-icons';
+
 ////////////////////////////////////////////////////////////////////////////////////////
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -225,7 +228,15 @@ export default function Routes() {
         <Stack.Screen
           name="EDITPROFILE"
           component={EditProfile}
-          options={{ headerShown: false }}
+          options={({ navigation }) => ({
+            title: 'Edit Profile',
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </TouchableOpacity>
+            ),
+            headerTitleAlign: 'center',
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
