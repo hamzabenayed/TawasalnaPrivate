@@ -67,7 +67,8 @@ const Login = () => {
       );
        console.log("Sign-In successful:", response.data);
        await AsyncStorage.setItem("userId", response.data.id);
-
+       await AsyncStorage.setItem("USER_REFRESH", response.data.refreshToken);
+       await AsyncStorage.setItem("USER_ACCESS", response.data.token);
       navigation.navigate("TABBAR");
     } catch (error) {
       console.error("Error SignIn:", error);
