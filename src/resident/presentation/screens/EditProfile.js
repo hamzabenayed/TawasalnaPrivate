@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,23 +10,28 @@ import {
   TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import Colors from "../Utils/Colors";
 import { imagesDataURL } from "../Utils/Images";
+import axios from "axios";
+import { base_Url } from "../../../BaseUrl";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
-const EditProfile = ({ navigation }) => {
+const EditProfile =  async () => {
+  const navigation = useNavigation();
   const navigateToProfile = () => {
     navigation.navigate("PROFILE");
   };
-
+  ///////////////////////////////////////////////////////////////////////////
+     
   const [selectedImage, setSelectedImage] = useState(imagesDataURL[0]);
-  const [fullname, setFullName] = useState("Ben Ayed Hamza");
-  const [age, setAge] = useState("24");
-  const [gender, setGender] = useState("Male");
-  const [phonenumber, setPhonenumber] = useState("99 645 443");
-  const [residentid, setResidentId] = useState("01395874");
-  const [address, setAddress] = useState("Tunis,Manouba");
-
+  const [fullname, setFullName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+  const [residentid, setResidentId] = useState("");
+  const [address, setAddress] = useState("");
+  //////////////////////////////////////////////////////////////////////////
   const handleImageSelection = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -42,6 +47,33 @@ const EditProfile = ({ navigation }) => {
     }
   };
 
+  ///////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const userId = await AsyncStorage.getItem("userId");
+        if (userId) {
+          const response = await axios.get(
+            `${base_Url}/tawasalna-user/residentprofile/getresidentprofile/${userId}`
+          );
+          const residentProfile = response.data;
+          setFullName(residentProfile.fullName);
+          setAge(residentProfile.age.toString());
+          setGender(residentProfile.gender);
+          setPhonenumber(residentProfile.phoneNumber);
+          setResidentId(residentProfile.residentId);
+          setAddress(residentProfile.address);
+        } else {
+          console.log("User ID not found in AsyncStorage");
+        }
+      } catch (error) {
+        console.error("Error getting resident profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+  
   return (
     <SafeAreaView
       style={{
@@ -274,7 +306,7 @@ const EditProfile = ({ navigation }) => {
             borderRadius: 10,
             alignItems: "center",
             justifyContent: "center",
-            marginTop:8,
+            marginTop: 8,
             marginBottom: 10,
           }}
           onPress={navigateToProfile}

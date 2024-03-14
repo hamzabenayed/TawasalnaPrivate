@@ -16,6 +16,7 @@ import {
 } from "@expo/vector-icons";
 import axios from "axios";
 import { base_Url } from "../../../BaseUrl";
+import AsyncStorage from "@react-native-async-storage/async-storage"; 
 
 const Login = () => {
   const navigation = useNavigation();
@@ -64,7 +65,9 @@ const Login = () => {
           password,
         }
       );
-      console.log("Sign-In successful:", response.data);
+       console.log("Sign-In successful:", response.data);
+       await AsyncStorage.setItem("userId", response.data.id);
+
       navigation.navigate("TABBAR");
     } catch (error) {
       console.error("Error SignIn:", error);

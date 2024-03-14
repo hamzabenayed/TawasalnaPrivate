@@ -53,7 +53,27 @@ const [email, setEmail] = useState(route.params.email );
       codeInputRefs.current[index + 1].focus();
     }
   };
-  
+ /////////////////////////////////////////////////////////////
+ const handleResendCode = async (text, index) => {
+   const enteredCode = newCode.join("");
+
+   try {
+     const response = await axios.patch(
+       `${base_Url}/tawasalna-user/auth/reset-code`,
+       {
+         email,
+         code: enteredCode,
+       }
+     );
+     console.log("Code has been sended :", response.data);
+   } catch (error) {
+     console.error("Error while sending Code :", error);
+     ToastAndroid.show(
+       "Failed to send code. Please try again.",
+       ToastAndroid.SHORT
+     );
+   }
+ }; 
   
   return (
     <SafeAreaView style={{ backgroundColor: Colors.WHITE, height: 760 }}>
@@ -97,7 +117,7 @@ const [email, setEmail] = useState(route.params.email );
         }}
       >
         <Text>Did not receive a code?</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleResendCode}>
           <Text style={{ color: Colors.PURPLE, marginLeft: 5 }}>Resend</Text>
         </TouchableOpacity>
       </View>
