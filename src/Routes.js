@@ -187,7 +187,15 @@ export default function Routes() {
         <Stack.Screen
           name="SIGNUP"
           component={SignUp}
-          options={{ headerShown: false }}
+          options={({ navigation }) => ({
+            title: "Sign Up",
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </TouchableOpacity>
+            ),
+            headerTitleAlign: "center",
+          })}
         />
         <Stack.Screen
           name="Forgot Password"
@@ -229,13 +237,13 @@ export default function Routes() {
           name="EDITPROFILE"
           component={EditProfile}
           options={({ navigation }) => ({
-            title: 'Edit Profile',
+            title: "Edit Profile",
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons name="arrow-back" size={24} color="black" />
               </TouchableOpacity>
             ),
-            headerTitleAlign: 'center',
+            headerTitleAlign: "center",
           })}
         />
       </Stack.Navigator>
