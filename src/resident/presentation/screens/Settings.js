@@ -30,12 +30,14 @@ export default function MainSettingsScreen() {
         </View>
         <View style={styles.bigContainer}>
           <View style={styles.titleBox}>
+           <View style={styles.modifTitle} >
             <View style={styles.iconStyle}>
               <FontAwesome name="user" size={24} color="#5a5959" />
             </View>
             <Text style={styles.textTitle}>Account</Text>
+            </View>
           </View>
-          <TouchableOpacity onPress={Settings} style={styles.buttons}>
+          <TouchableOpacity style={styles.buttons}>
             <View style={styles.insideBtn}>
               <MaterialIcons name="person-outline" size={24} color="#5a5959" />
 
@@ -59,11 +61,13 @@ export default function MainSettingsScreen() {
             </View>
             <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
           </TouchableOpacity>
-          <View style={styles.notificationTitle}>
+          <View style={styles.titleBox}>
+            <View style={styles.modifTitle}>
             <View style={styles.iconStyle}>
               <FontAwesome name="support" size={24} color="#5a5959" />
             </View>
             <Text style={styles.textTitle}>Support & About</Text>
+            </View>
           </View>
           <TouchableOpacity style={styles.buttons}>
             <View style={styles.insideBtn}>
@@ -81,11 +85,13 @@ export default function MainSettingsScreen() {
             </View>
             <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
           </TouchableOpacity>
-          <View style={styles.cacheTitle}>
+          <View style={styles.titleBox}>
+           <View style={styles.modifTitle}>
             <View style={styles.iconStyle}>
               <MaterialIcons name="cached" size={24} color="#5a5959" />
             </View>
             <Text style={styles.textTitle}>Cache & Cellular</Text>
+            </View>
           </View>
           <TouchableOpacity style={styles.buttons}>
             <View style={styles.insideBtn}>
@@ -103,11 +109,13 @@ export default function MainSettingsScreen() {
             </View>
             <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
           </TouchableOpacity>
-          <View style={styles.moreTitle}>
+          <View style={styles.titleBox}>
+          <View style={styles.modifTitle}>
             <View style={styles.iconStyle}>
               <SimpleLineIcons name="action-redo" size={24} color="#5a5959" />
             </View>
             <Text style={styles.textTitle}>Actions</Text>
+            </View>
           </View>
           <TouchableOpacity style={styles.buttons}>
             <View style={styles.insideBtn}>
@@ -162,9 +170,9 @@ const styles = StyleSheet.create({
     height: height * 0.09,
     width: width * 0.9,
     // backgroundColor: 'green',
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     alignItems: "center",
-    paddingRight: 200,
+    // paddingRight: 200,
     gap: 20,
     flexDirection: "row",
   },
@@ -216,7 +224,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'green',
     justifyContent: "center",
     alignItems: "center",
-    paddingRight: 135,
+    // paddingRight: 135,
     gap: 20,
     flexDirection: "row",
   },
@@ -240,4 +248,10 @@ const styles = StyleSheet.create({
     gap: 20,
     flexDirection: "row",
   },
+  modifTitle:{
+    flexDirection:"row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap:15
+  }
 });
