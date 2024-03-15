@@ -1,4 +1,3 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState, useEffect } from "react";
 import {
@@ -16,15 +15,18 @@ import { EvilIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Colors from "../Utils/Colors";
-import axios from "axios";
-import { base_Url } from "../../../BaseUrl";
 import axiosInstance from "../../../core/config/Axios";
+import { decode, encode } from "base64-arraybuffer";
+
 const EditProfile = ({ navigation }) => {
   const navigateToProfile = () => {
     navigation.navigate("PROFILE");
   };
   //////////////////////////////////////////////////////////////////////
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState("US");
+  
+
   const [fullName, setFullName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
@@ -33,7 +35,25 @@ const EditProfile = ({ navigation }) => {
   const [address, setAddress] = useState("");
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(true);
-  const [profilePhotoPath, setProfilePhotoPath] = useState("");
+  //////////////////////////////////////////////////////////////////
+  const countryCodes = {
+    US: "+1", // United States
+    CA: "+1", // Canada
+    TN:"+216"
+  };
+  ///////////////////////////////////////////////////////////////////////
+  const handleCountryChange = (country) => {
+    setSelectedCountry(country);
+    const countryCode = countryCodes[country];
+    if (phoneNumber && phoneNumber.startsWith(countryCode)) {
+      return;
+    }
+    setPhonenumber(countryCode + phoneNumber);
+  };
+
+  const handlePhoneNumberChange = (number) => {
+    setPhonenumber(number);
+  };
   //////////////////////////////////////////////////////////////////
   const handleImageSelection = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -49,8 +69,19 @@ const EditProfile = ({ navigation }) => {
       setSelectedImage(result.assets[0].uri);
     }
   };
-  //////////////////////////////////////////////////////////////////////////
 
+  
+  //////////////////////////////////////////////////////////////////////////
+  const setCountriesPhonenumber = (text) => {
+    const numericText = text.replace(/\D/g, "");
+
+    if (numericText.trim() === "") {
+      setPhonenumber("");
+    } else {
+      setPhonenumber(numericText);
+    }
+  };
+////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -134,21 +165,33 @@ const EditProfile = ({ navigation }) => {
     }
   };
   ////////////////////////////////////////////////////////////////////////////
-  useEffect(() => {
-    const fetchProfilePhoto = async () => {
-      try {
-        const userId = await AsyncStorage.getItem("userId");
-        const response = await axiosInstance.get(
-          `tawasalna-user/residentprofile/getprofilephoto/${userId}`
-        );
-        setSelectedImage(response.data);
-      } catch (error) {
-        console.error("Error getting profile photo:", error);
-      }
-    };
+useEffect(() => {
+  const fetchProfilePhoto = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const response = await axiosInstance.get(
+        `tawasalna-user/residentprofile/getprofilephoto/${userId}`,
+        {
+          // Add responseType: 'arraybuffer' to indicate that you expect binary data in the response
+          responseType: "arraybuffer",
+        }
+      );
 
-    fetchProfilePhoto();
-  }, []);
+      // Convert the binary image data to a base64 string
+      const base64Image = encode(response.data);
+
+      // Construct the data URL with the base64 string
+      const imageUrl = `data:image/jpeg;base64,${base64Image}`;
+
+      // Set the selectedImage state with the data URL
+      setSelectedImage(imageUrl);
+    } catch (error) {
+      console.error("Error getting profile photo:", error);
+    }
+  };
+
+  fetchProfilePhoto();
+}, []);
 
  
   return (
@@ -205,18 +248,29 @@ const EditProfile = ({ navigation }) => {
               </View>
             </View>
 
-            <PaperTextInput
-              mode="outlined"
-              label="Phone"
-              keyboardType="numeric"
-              value={phoneNumber}
-              onChangeText={setPhonenumber}
-              style={styles.input}
-            />
+            <View style={styles.containerNested}>
+              <Picker
+                selectedValue={selectedCountry}
+                onValueChange={(itemValue) => handleCountryChange(itemValue)}
+                style={styles.nestedInputesOne}
+              >
+                <Picker.Item label="USA" value="US" />
+                <Picker.Item label="Canada" value="CA" />
+                <Picker.Item label="Tunisia" value="TN" />
+              </Picker>
+              <PaperTextInput
+                mode="outlined"
+                label="Phone"
+                keyboardType="numeric"
+                value={phoneNumber}
+                onChangeText={setPhonenumber}
+                style={styles.nestedInputesTwo}
+              />
+            </View>
 
             <PaperTextInput
               mode="outlined"
-              label="Adress"
+              label="Address"
               value={address}
               onChangeText={setAddress}
               style={styles.input}

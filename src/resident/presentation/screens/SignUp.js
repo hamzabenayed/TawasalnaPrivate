@@ -26,9 +26,14 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [id, setId] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   //////////////////////////////////////////////////////////////////
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+  const toggleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
   //////////////////////////////////////////////////////////////////
   const toggleCheckbox = () => {
@@ -132,7 +137,7 @@ const SignUp = () => {
 
   return (
     <SafeAreaView style={{ backgroundColor: Colors.WHITE, height: 760 }}>
-      <View style={{ marginTop: "40%" }}>
+      <View style={{ marginTop: "20%" }}>
         <Text style={{ marginLeft: "4%" }}>Email</Text>
 
         <View
@@ -224,7 +229,7 @@ const SignUp = () => {
         >
           <TextInput
             placeholder="*********"
-            secureTextEntry={!showPassword}
+            secureTextEntry={!showConfirmPassword}
             autoCapitalize="none"
             autoCompleteType="password"
             autoCorrect={false}
@@ -232,9 +237,9 @@ const SignUp = () => {
             onChangeText={setConfirmPassword}
             style={{ flex: 1 }}
           />
-          <TouchableOpacity onPress={toggleShowPassword}>
+          <TouchableOpacity onPress={toggleShowConfirmPassword}>
             <MaterialCommunityIcons
-              name={showPassword ? "eye-off" : "eye"}
+              name={showConfirmPassword ? "eye-off" : "eye"}
               size={24}
               color="black"
             />

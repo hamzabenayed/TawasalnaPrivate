@@ -1,221 +1,252 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState } from "react";
+import {
+  ScrollView,
+  SectionList,
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Switch,
+} from "react-native";
 
-import Colors from '../Utils/Colors';
-const Settings = ({ navigation }) => {
-  const navigateToEditProfile = () => {
-    navigation.navigate('Edit Profile');
+import { FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
+const { width, height } = Dimensions.get("window");
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export default function MainSettingsScreen({ navigation }) {
+  const Settings = ({ navigation }) => {
+    const navigateToEditProfile = () => {
+      navigation.navigate("Edit Profile");
+    };
   };
-
-  const navigateToSecurity = () => {
-    console.log('Security function');
+  const LogOut = async () => {
+    try {
+      await AsyncStorage.clear();
+      navigation.navigate("LOGIN");
+    } catch (error) {
+      console.error("Error clearing AsyncStorage:", error);
+    }
   };
-
-  const navigateToPrivacy = () => {
-    console.log('Privacy function');
-  };
-
-  const navigateToSubscription = () => {
-    console.log('Subscription function');
-  };
-
-  const navigateToSupport = () => {
-    console.log('Support function');
-  };
-
-  const navigateToTermsAndPolicies = () => {
-    navigation.navigate('Terms & Policies');
-  };
-
-  const navigateToFreeSpace = () => {
-    console.log('Free Space function');
-  };
-
-  const navigateToDateSaver = () => {
-    console.log('Date saver');
-  };
-
-  const navigateToReportProblem = () => {
-    navigation.navigate('Report a Problem');
-  };
-
-  const addAccount = () => {
-    console.log('Aadd account ');
-  };
-
-  const logout = () => {
-    console.log('Logout');
-  };
-
-  const accountItems = [
-    {
-      icon: 'person-outline',
-      text: ' Account Settings',
-      action: navigateToEditProfile,
-    },
-    { icon: 'security', text: 'Security', action: navigateToSecurity },
-
-    { icon: 'lock-outline', text: 'Privacy', action: navigateToPrivacy },
-  ];
-
-  const supportItems = [
-    { icon: 'help-outline', text: 'Help & Support', action: navigateToSupport },
-    {
-      icon: 'info-outline',
-      text: 'Terms and Policies',
-      action: navigateToTermsAndPolicies,
-    },
-  ];
-
-  const cacheAndCellularItems = [
-    {
-      icon: 'delete-outline',
-      text: 'Free up space',
-      action: navigateToFreeSpace,
-    },
-    { icon: 'save-alt', text: 'Date Saver', action: navigateToDateSaver },
-  ];
-
-  const actionsItems = [
-    {
-      icon: 'outlined-flag',
-      text: 'Report a problem',
-      action: navigateToReportProblem,
-    },
-    { icon: 'people-outline', text: 'Add Account', action: addAccount },
-    { icon: 'logout', text: 'Log out', action: logout },
-  ];
-
-  const renderSettingsItem = ({ icon, text, action }) => (
-    <TouchableOpacity
-      onPress={action}
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 8,
-        paddingLeft: 12,
-        backgroundColor: Colors.LIGHT_WHITE,
-      }}>
-      <MaterialIcons name={icon} size={24} color="black" />
-      <Text
-        style={{
-          marginLeft: 36,
-          fontWeight: 600,
-          fontSize: 16,
-        }}>
-        {text}{' '}
-      </Text>
-    </TouchableOpacity>
-  );
-
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: Colors.WHITE,
-      }}>
-      <View
-        style={{
-          marginHorizontal: 12,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: 10,
-        }}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            position: 'absolute',
-            left: 0,
-          }}>
-          <MaterialIcons name="keyboard-arrow-left" size={24} color={Colors.BLACK} />
-        </TouchableOpacity>
-
-        <Text>Settings</Text>
-      </View>
-
-      <ScrollView style={{ marginHorizontal: 12 }}>
-        {/* Account Settings */}
-        <View style={{ marginBottom: 12 }}>
-          <Text
-            style={{
-              marginVertical: 10,
-              backgroundColor: Colors.PURPLE,
-            }}>
-            Account
-          </Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: Colors.PURPLE,
-            }}>
-            {accountItems.map((item, index) => (
-              <React.Fragment key={index}>{renderSettingsItem(item)}</React.Fragment>
-            ))}
-          </View>
+    <View style={styles.parentCont}>
+      <ScrollView>
+        <View style={styles.screenTitleCont}>
+          <Text style={styles.screenTitle}>Settings</Text>
         </View>
-
-        {/* Support and About settings */}
-
-        <View style={{ marginBottom: 12 }}>
-          <Text style={{ marginVertical: 10, backgroundColor: Colors.PURPLE }}>
-            Support & About{' '}
-          </Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: Colors.PURPLE,
-            }}>
-            {supportItems.map((item, index) => (
-              <React.Fragment key={index}>{renderSettingsItem(item)}</React.Fragment>
-            ))}
+        <View style={styles.bigContainer}>
+          <View style={styles.titleBox}>
+            <View style={styles.iconStyle}>
+              <FontAwesome name="user" size={24} color="#5a5959" />
+            </View>
+            <Text style={styles.textTitle}>Account</Text>
           </View>
-        </View>
+          <TouchableOpacity onPress={Settings} style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="person-outline" size={24} color="#5a5959" />
 
-        {/* Cache & Cellular */}
-        <View style={{ marginBottom: 12 }}>
-          <Text
-            style={{
-              marginVertical: 10,
-              backgroundColor: Colors.PURPLE,
-            }}>
-            Cache & Cellular{' '}
-          </Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: Colors.WHITE,
-            }}>
-            {cacheAndCellularItems.map((item, index) => (
-              <React.Fragment key={index}>{renderSettingsItem(item)}</React.Fragment>
-            ))}
+              <Text style={styles.textBtn}>Account Settings</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="security" size={24} color="#5a5959" />
+
+              <Text style={styles.textBtn}>Security</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="lock-outline" size={24} color="#5a5959" />
+
+              <Text style={styles.textBtn}>Privacy</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <View style={styles.notificationTitle}>
+            <View style={styles.iconStyle}>
+              <FontAwesome name="support" size={24} color="#5a5959" />
+            </View>
+            <Text style={styles.textTitle}>Support & About</Text>
           </View>
-        </View>
+          <TouchableOpacity style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="help-outline" size={24} color="#5a5959" />
 
-        {/* Actions Settings */}
+              <Text style={styles.textBtn}>Help & Support</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="info-outline" size={24} color="#5a5959" />
 
-        <View style={{ marginBottom: 12 }}>
-          <Text
-            style={{
-              marginVertical: 10,
-              backgroundColor: Colors.PURPLE,
-            }}>
-            Actions
-          </Text>
-          <View
-            style={{
-              borderRadius: 12,
-              backgrounColor: Colors.PURPLE,
-            }}>
-            {actionsItems.map((item, index) => (
-              <React.Fragment key={index}>{renderSettingsItem(item)}</React.Fragment>
-            ))}
+              <Text style={styles.textBtn}>Terms & Policy</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <View style={styles.cacheTitle}>
+            <View style={styles.iconStyle}>
+              <MaterialIcons name="cached" size={24} color="#5a5959" />
+            </View>
+            <Text style={styles.textTitle}>Cache & Cellular</Text>
           </View>
+          <TouchableOpacity style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="delete-outline" size={24} color="#5a5959" />
+
+              <Text style={styles.textBtn}>Free Up Space</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="save-alt" size={24} color="#5a5959" />
+
+              <Text style={styles.textBtn}>Date Saver</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <View style={styles.moreTitle}>
+            <View style={styles.iconStyle}>
+              <SimpleLineIcons name="action-redo" size={24} color="#5a5959" />
+            </View>
+            <Text style={styles.textTitle}>Actions</Text>
+          </View>
+          <TouchableOpacity style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="outlined-flag" size={24} color="#5a5959" />
+
+              <Text style={styles.textBtn}>Report a problem</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttons}>
+            <View style={styles.insideBtn}>
+              <MaterialIcons name="people-outline" size={24} color="#5a5959" />
+
+              <Text style={styles.textBtn}>Add Account</Text>
+            </View>
+            <MaterialIcons name="arrow-forward-ios" size={24} color="#5a5959" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={LogOut} style={styles.buttons}>
+            <Text style={styles.textBtn}>Sign Out</Text>
+            <MaterialIcons name="logout" size={24} color="#5a5959" />
+          </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
-};
+}
+const styles = StyleSheet.create({
+  parentCont: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 5,
+  },
+  screenTitleCont: {
+    width: width * 0.9,
+    height: height * 0.12,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 150,
+  },
+  screenTitle: {
+    fontSize: 35,
+    fontWeight: "bold",
+  },
+  bigContainer: {
+    flexDirection: "column",
+    gap: 3,
+    padding: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  titleBox: {
+    height: height * 0.09,
+    width: width * 0.9,
+    // backgroundColor: 'green',
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    paddingRight: 200,
+    gap: 20,
+    flexDirection: "row",
+  },
+  iconStyle: {
+    borderRadius: 100,
+    backgroundColor: "#ADD8E6",
+    height: height * 0.06,
+    width: width * 0.12,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft:"10%"
+  },
+  textTitle: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: width * 0.9,
+    height: height * 0.1,
+    borderRadius: 5,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
 
-export default Settings;
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
+    backgroundColor: "white",
+  },
+  insideBtn: {
+    // width: width*0.8,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+  },
+  textBtn: {
+    fontWeight: "bold",
+    fontSize: 17,
+  },
+  notificationTitle: {
+    height: height * 0.09,
+    width: width * 0.9,
+    // backgroundColor: 'green',
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 135,
+    gap: 20,
+    flexDirection: "row",
+  },
+  moreTitle: {
+    height: height * 0.09,
+    width: width * 0.9,
+    // backgroundColor: 'green',
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 210,
+    gap: 20,
+    flexDirection: "row",
+  },
+  cacheTitle: {
+    height: height * 0.09,
+    width: width * 0.9,
+    // backgroundColor: 'green',
+    justifyContent: "center",
+    alignItems: "center",
+    paddingRight: 140,
+    gap: 20,
+    flexDirection: "row",
+  },
+});
