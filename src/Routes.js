@@ -181,7 +181,7 @@ export default function Routes() {
       <Stack.Navigator>
         <Stack.Screen
           name="LOGIN"
-          component={Login}
+          component={Settings}
           options={{ headerShown: false }}
         />
         <Stack.Screen

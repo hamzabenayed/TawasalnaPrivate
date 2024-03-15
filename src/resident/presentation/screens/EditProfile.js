@@ -252,7 +252,7 @@ useEffect(() => {
               <Picker
                 selectedValue={selectedCountry}
                 onValueChange={(itemValue) => handleCountryChange(itemValue)}
-                style={styles.nestedInputesOne}
+                style={styles.nestedInputesOnee}
               >
                 <Picker.Item label="USA" value="US" />
                 <Picker.Item label="Canada" value="CA" />
@@ -264,7 +264,7 @@ useEffect(() => {
                 keyboardType="numeric"
                 value={phoneNumber}
                 onChangeText={setPhonenumber}
-                style={styles.nestedInputesTwo}
+                style={styles.nestedInputesTwoo}
               />
             </View>
 
@@ -383,6 +383,12 @@ const styles = StyleSheet.create({
   },
   nestedInputesTwo: {
     width: width * 0.4,
+  },
+  nestedInputesOnee: {
+    width: width * 0.3,
+  },
+  nestedInputesTwoo: {
+    width: width * 0.6,
   },
   btnContainer: {
     justifyContent: "center",
